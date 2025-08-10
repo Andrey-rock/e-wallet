@@ -15,7 +15,6 @@ public class Wallet {
 
     @Id
     @GeneratedValue
-    @Setter(AccessLevel.NONE)
     @Column(name = "wallet_id")
     private UUID walletId;
     private BigDecimal balance;
