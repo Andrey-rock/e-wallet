@@ -19,4 +19,8 @@ public class Wallet {
     @Column(name = "wallet_id")
     private UUID walletId;
     private BigDecimal balance;
+
+    public void changeBalance(BigDecimal amount) {
+        balance = balance.add(amount);
+    }
 }
