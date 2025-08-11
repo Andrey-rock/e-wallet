@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  app:
+    image: 'wallet:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - "5432:5432"
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/wallet
+      - SPRING_DATASOURCE_USERNAME=Andrey_student
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=Andrey_student
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=wallet
