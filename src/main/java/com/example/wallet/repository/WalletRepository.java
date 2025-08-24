@@ -15,7 +15,7 @@ import java.util.UUID;
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "3000")})
     @NotNull
     Optional<Wallet> findById(@NotNull UUID accountId);

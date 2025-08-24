@@ -1,5 +1,4 @@
-version: '2'
-
+version: '3.8'
 services:
   app:
     image: 'wallet:latest'
@@ -8,20 +7,42 @@ services:
       dockerfile: Dockerfile
     container_name: app
     ports:
-      - "5432:5432"
-      - "8080:8080"
+      - "8181:8080"
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/wallet
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/wallet
       - SPRING_DATASOURCE_USERNAME=Andrey_student
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
 
   db:
-    image: 'postgres:13.1-alpine'
+    image: 'postgres:17.1-alpine'
     container_name: db
     environment:
       - POSTGRES_USER=Andrey_student
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=wallet
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./bd/bd.sql:/docker-entrypoint-initdb.d/bd.sql
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+   container_name: pgadmin4_container
+   image: dpage/pgadmin4:2025-06-27-2
+   restart: always
+   environment:
+    PGADMIN_DEFAULT_EMAIL: admin@admin.com
+    PGADMIN_DEFAULT_PASSWORD: root
+   ports:
+    - "5050:80"
+   volumes:
+    - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  db-data:
+  pgadmin-data:
+
